@@ -1,9 +1,9 @@
 {
     "manifest_version": 2,
     "name": "UManitoba RateMyProf Finder",
-    "version": "1.0",
+    "version": "0.2",
   
-    "description": "Attempts to find and display the RateMyProf score of professors displayed on the UManitoba website",
+    "description": "Finds and displays the RateMyProf score of professors when their names are hovered over on the UManitoba website.",
   
     "icons": {
       "48": "icons/rmp-48.png"

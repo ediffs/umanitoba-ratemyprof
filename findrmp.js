@@ -1,7 +1,4 @@
-// Finds and displays the RateMyProf score of professors when their names are hovered over on the UManitoba website.
-// Created by Edith Hohner, version 0.2.
-
- // the container of courses
+// the container of courses
 let courseContainer = document.querySelector(".grid tbody");
 console.log(courseContainer);
 if(courseContainer != null){
