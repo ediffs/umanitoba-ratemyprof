@@ -12,22 +12,36 @@ if(courseContainer != null){
         for(let i = 0; i < courses.length; i++){
             let attributes = courses[i].querySelectorAll("td");
             let instructorPos = 7; // position where instructor info is stored in attributes
-            professors = professors.concat(attributes[instructorPos].innerText.replace(" (Primary)\n", "")); 
+            // initialize list of all professors
+            let profName = attributes[instructorPos].innerText.replace(" (Primary)\n", "", );
+            professors = professors.concat({name: profName, score: findScore(profName)}); 
         }
         console.log(professors);
-        // if(professors != null){
-        //     await displayPopup(professors);
-        // }
+    }
+}
+
+// find the score on RMP given a professor name
+async function findScore(professorName) {
+    try{
+        const response = await fetch(`https://www.ratemyprofessors.com/search/professors/1438?q=${encodeURIComponent(professorName)}`);
+
+        // extract relevant data from the page
+        const page = await response.json();
+        const professorCard = page.querySelector("CardNumRating__CardNumRatingNumber-sc-17t4b9u-2 ERCLc").innerHTML;
+        console.log(professorCard.textContent);
+        return professorCard ? professorCard.textContent : "No score found.";
+    }
+    catch(error){
+        console.error(error);
     }
 }
 
   // display the appropriate popup with the professor's score if mouse is hovered on the professor's name
   async function displayPopup(professors) {
-    for(let i = 0; i < professors.length; i++){
-        let score = await findScore(professors[i]);
         let popup = document.createElement("div");
         popup.className = "popup";
-        popup.innerHTML = `Professor: ${professor}<br>Score: ${score}`;
+        let professor = search();
+        popup.innerHTML = `Professor: ${professor.name}<br>Score: ${professor.score}`;
         popup.style.position = "absolute";
         popup.style.backgroundColor = "white";
         popup.style.border = "1px solid black";
@@ -44,27 +58,7 @@ if(courseContainer != null){
         professors.addEventListener("mouseout", () => {
             popup.style.display = "none";
         });
-    }
 }
 
-// find the score on RMP given a professor name
-async function findScore(professorName) {
 
-    // FIXME: need require.js
-    const puppeteer = require("puppeteer");
 
-    const browser = await puppeteer.launch();
-    const page = await browser.newPage();
-    const url = `https://www.ratemyprofessors.com/search/professors/1438?q=${encodeURIComponent(professorName)}`;
-    await page.goto(url);
-
-        // extract relevant data from the page
-        const score = await page.evaluate(() => {
-            const professorCard = document.querySelector("CardNumRating__CardNumRatingNumber-sc-17t4b9u-2 ERCLc").innerHTML;
-            return professorCard ? professorCard.textContent : "No results found";
-        });
-
-        await browser.close();
-        return score;
-    }
- 
