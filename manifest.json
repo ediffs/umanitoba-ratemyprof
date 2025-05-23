@@ -3,7 +3,7 @@
     "name": "UManitoba RateMyProf Finder",
     "version": "0.2",
   
-    "description": "Finds and displays the RateMyProf score of professors when their names are hovered over on the UManitoba website.",
+    "description": "Finds and displays the RateMyProf score of professors when their names are hovered over on any UManitoba website.",
   
     "icons": {
       "48": "icons/rmp-48.png"
@@ -12,7 +12,7 @@
     "content_scripts": [
       {
         "matches": ["*://*.umanitoba.ca/*"],
-        "js": ["findrmp.js"]
+        "js": ["./scr/findrmp.js"]
       }
     ]
   }
