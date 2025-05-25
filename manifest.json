@@ -4,15 +4,18 @@
     "version": "0.2",
   
     "description": "Finds and displays the RateMyProf score of professors when their names are hovered over on any UManitoba website.",
-  
+    "permissions": ["activeTab", "webRequest", "https://aurora-registration.umanitoba.ca/StudentRegistrationSsb/ssb/courseSearch/courseSearch*", "https://www.ratemyprofessors.com/*"],
     "icons": {
       "48": "icons/rmp-48.png"
     },
   
+    "background": {
+    "scripts": ["./scr/searchrmp.js"]
+  },
     "content_scripts": [
       {
-        "matches": ["*://*.umanitoba.ca/*"],
-        "js": ["./scr/findrmp.js"]
+        "matches": ["https://aurora-registration.umanitoba.ca/StudentRegistrationSsb/ssb/courseSearch/courseSearch*"],
+        "js": ["./scr/displaypopup.js"]
       }
     ]
   }
