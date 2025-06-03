@@ -1,75 +1,76 @@
 // content script that displays the popup when the mouse is hovered over a professor name 
 
-console.log('run displaypopup');
-
-// create the popup
-const popup = document.createElement("popup");
-popup.setAttribute("id", "instructor-attributes");
-let popupContent = document.createTextNode("Instructor: " + INST_NAME + "\nScore: " + INST_SCORE + " / 5.0\n");
-popup.appendChild(popupContent);
-
-// listeners to display popup
-hoverElement.addEventListener('mouseenter',
-    () => {
-        popup.style.display = 'block';
-    });
-
-hoverElement.addEventListener('mouseleave',
-    () => {
-        popup.style.display = 'none';
-    });
-
 // call displayStats() when registration is loaded
 displayStats();
 
 // call the function when the URL hash changes
 window.addEventListener('hashchange', displayStats, false);
 
-// get the stats for each page
+// get and show ratemyprof stats for each page
 async function displayStats() {
 
-    	const profInterval = setInterval(() => {
+    const profInterval = setInterval(() => {
 
-            // the container of courses
-            let courseContainer = document.querySelector(".grid tbody");
+        // get all the emails
+        const hoverElements = document.querySelectorAll('[class="email"]');
 
-            if(courseContainer != null){
+        // // create the popup
+        const popup = document.createElement("popup");
+        let popupContent = document.createTextNode("Instructor: PROF_NAME\nScore: PROF_SCORE / 5.0\nRatings: PROF_RATINGS\nDifficulty: PROF_DIFFICULTY\nWould Take Again: PROF_WTA%\n");                
+        popup.appendChild(popupContent);
 
-            let courses = courseContainer.querySelectorAll("tr"); 
+        let currProfessor = null;
 
-            if(courses != null){
+        if(hoverElements != null){
+            // listeners to display popup
+            for(let i = 0; i < hoverElements.length; i++){
+                hoverElements[i].addEventListener('mouseenter',
+                    () => {
+                        let hover = document.querySelectorAll( ":hover" );
+                        currProfessor = hover[hover.length - 1];
+                        popup.style.display = 'block';
+                    });
 
-                    // reset the interval
-                    clearInterval(profInterval);
+                hoverElements[i].addEventListener('mouseleave',
+                    () => {
+                        currProfessor = null;
+                        popup.style.display = 'none';
+                    });
+            }
+        }
 
-                    // consider a different loop structure
-                    for (let i = 0; i < courses.length; i++){
+        // the NodeList of courses
+        let courses = document.querySelector(".grid tbody").childNodes;
 
-                        // initialize list of all professors
-                        let professors = [];
+        if(courses != null){
 
-                        let td = courses[i].querySelectorAll("td");
+            // reset the interval
+            clearInterval(profInterval);
 
-                        // TODO: APPEND POPUP
+            // initialize list of all professors
+            let professors = [];
 
-                        let professorName = td[7].innerText.replace(" (Primary)\n", "", );
+            // this loop should IDEALLY run whenever page is changed / refreshed
+            for (let i = 0; i < courses.length; i++){
 
-                        // event listening
-                        let port = browser.runtime.connect({ name: 'professor-rating' });
-                        port.postMessage({ professorName });
-                        port.onMessage.addListener((professor) => {
+                let professorName = courses[i].childNodes[7].innerText.replace(" (Primary)\n", "", );
 
-                            console.log('Received response for professor:', professor);
+                // TODO: APPEND POPUP
 
-                            // add to the professors array
-                            if (professor.length != 0) {
-                                professors = professors.concat({name: professorName, score: professor.avgRating, ratings: professor.numRatings, difficulty: professor.avgDifficulty, takeAgain: professor.wouldTakeAgainPercent, id: professor.professor});
-                            } else {
-                                professors = professors.concat({name: professorName, score: "No score found"})
-                            }
-                        })
+                // event listening
+                let port = browser.runtime.connect({ name: 'professor-rating' });
+                port.postMessage({ professorName });
+                port.onMessage.addListener((professor) => {
+
+                    // add to the professors array
+                    if (professor.length != 0) {
+                        professors = professors.concat({name: professorName, score: professor.avgRating, ratings: professor.numRatings, difficulty: professor.avgDifficulty, takeAgain: professor.wouldTakeAgainPercent, id: professor.professor});
+                    } else {
+                        professors = professors.concat({name: professorName, score: "n/a", ratings: "n/a", difficulty: "n/a", takeAgain: "n/a", id: "could not find professor"});
                     }
-                console.log(professors);
+
+                    console.log(professors);
+                });
             }
         }
 

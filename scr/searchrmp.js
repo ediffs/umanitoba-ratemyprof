@@ -1,7 +1,5 @@
 // background script to scrape the ratemprof website and return appropriate data
 
-console.log('run searchrmp');
-
 const AUTH_TOKEN = `dGVzdDp0ZXN0`;
 const URL = `https://www.ratemyprofessors.com/graphql`;
 const ID = `U2Nob29sLTE0Mzg=`;
