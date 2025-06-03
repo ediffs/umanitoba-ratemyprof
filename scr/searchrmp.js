@@ -1,9 +1,26 @@
 // background script to scrape the ratemprof website and return appropriate data
 
+console.log('run searchrmp');
+
 const AUTH_TOKEN = `dGVzdDp0ZXN0`;
 const URL = `https://www.ratemyprofessors.com/graphql`;
 const ID = `U2Nob29sLTE0Mzg=`;
 const LEGACY_ID = `1438`;
+
+// EVENT LISTENING
+browser.runtime.onConnect.addListener((port) => {
+	port.onMessage.addListener((request) => {
+		getProfessorStats(request.professorName)
+			.then((professor) => {
+				port.postMessage(professor);
+			})
+			.catch((error) => {
+				console.error('Error:', error);
+				port.postMessage({ error });
+			});
+	});
+});
+// EVENT LISTENING
 
 // find and return the stats from ratemyprof given a professor name
 async function getProfessorStats(professorName) {
@@ -60,5 +77,4 @@ async function getProfessorStats(professorName) {
 
     console.log(professorName, professorStats);
     return professorStats;
-
 }
