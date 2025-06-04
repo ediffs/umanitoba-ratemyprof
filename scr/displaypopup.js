@@ -48,31 +48,35 @@ async function displayStats() {
 
                     // event listening
 
-                    console.log("sending request to ratemyprofessors...");
+                    if(professorName != "" && professorName != null) { 
 
-                    let port = browser.runtime.connect({ name: 'professor-rating' });
-                    port.postMessage({ professorName });   
+                        console.log("sending request to ratemyprofessors...");
 
-                    port.onMessage.addListener((professor) => {
+                        let port = browser.runtime.connect({ name: 'professor-rating' });
+                        port.postMessage({ professorName });   
 
-                        if(professor.length != 0){
+                        port.onMessage.addListener((professor) => {
 
-                            // insert the professor's stats
-                            const rmpLink = `<a target="_blank" rel="noopener noreferrer" href='https://www.ratemyprofessors.com/professor?tid=${professor.legacyId}'>${professor.numRatings} ratings</a>`;
-                            professorLink.insertAdjacentHTML('afterend', `<div class="rating">${rmpLink}</div>`);
-                            professorLink.insertAdjacentHTML('afterend', `<div class="rating"><b>Rating:</b> ${professor.avgRating} / 5 </div>`);
-                            professorLink.insertAdjacentHTML('afterend', `<div class="rating"><b>Difficulty:</b> ${professor.avgDifficulty} / 5 </div>`);
-                            if (professor.wouldTakeAgainPercent != -1){
-                                professorLink.insertAdjacentHTML('afterend', `<div class="rating"><b>${Math.round(Number(professor.wouldTakeAgainPercent))}%</b> would take again.</div>`);
-                            }   
+                            if(professor.length != 0){
 
-                        } else {
-                            professorLink.insertAdjacentHTML('afterend', `<div class="rating"><b>No ratings found.</b></div>`);
-                        } 
-                        
-                        console.log("professor information retrieved!");
+                                // insert the professor's stats
+                                const rmpLink = `<a target="_blank" rel="noopener noreferrer" href='https://www.ratemyprofessors.com/professor?tid=${professor.legacyId}'>${professor.numRatings} ratings</a>`;
+                                professorLink.insertAdjacentHTML('afterend', `<div class="rating">${rmpLink}</div>`);
+                                professorLink.insertAdjacentHTML('afterend', `<div class="rating"><b>Rating:</b> ${professor.avgRating} / 5 </div>`);
+                                professorLink.insertAdjacentHTML('afterend', `<div class="rating"><b>Difficulty:</b> ${professor.avgDifficulty} / 5 </div>`);
+                                if (professor.wouldTakeAgainPercent != -1){
+                                    professorLink.insertAdjacentHTML('afterend', `<div class="rating"><b>${Math.round(Number(professor.wouldTakeAgainPercent))}%</b> would take again.</div>`);
+                                }   
 
-                    });
+                            } else {
+                                professorLink.insertAdjacentHTML('afterend', `<div class="rating"><b>No ratings found.</b></div>`);
+                            } 
+                            
+                            console.log("professor information retrieved!");
+
+                        });
+                    }
+
                 });
 
             hoverElements[i].addEventListener('mouseleave',
