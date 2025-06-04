@@ -14,4 +14,4 @@ Install Steps:
 
 From here you can open up Aurora Registration and browse classes as you please. Keep in mind: steps 2-4 will have to be repeated each time Firefox is restarted.
 
-Inspiration: https://github.com/parsakhaz/uwRMP
+Idea + Inspiration: https://github.com/parsakhaz/uwRMP
