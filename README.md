@@ -7,8 +7,8 @@ If scores aren't displaying when professor name is hovered over:
 - Click "Catalog Search Results" and then click "View Sections" once again.
 
 Install Steps:
-1. Download and extract zip folder
-2. In the Firefox search bar type 'about:debugging'
+1. Download and extract "umanitoba-ratemyprof.zip" under "Releases".
+2. In the Firefox search bar type 'about:debugging'.
 3. Click 'This Firefox", then "Load Temporary Add-on".
 4. Select the "manifest.json" file in the folder.
 
