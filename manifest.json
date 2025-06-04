@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "UManitoba RateMyProf Finder",
-    "version": "1.0",
+    "version": "1.1",
   
     "description": "Finds and displays the RateMyProf score of professors when their names are hovered over on Aurora Registration.",
     "permissions": ["activeTab", "webRequest", "https://aurora-registration.umanitoba.ca/StudentRegistrationSsb/ssb/courseSearch/courseSearch*", "https://www.ratemyprofessors.com/*"],
