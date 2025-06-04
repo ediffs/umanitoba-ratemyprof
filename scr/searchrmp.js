@@ -5,7 +5,7 @@ const URL = `https://www.ratemyprofessors.com/graphql`;
 const ID = `U2Nob29sLTE0Mzg=`;
 const LEGACY_ID = `1438`;
 
-// EVENT LISTENING
+// listen for command from popup
 browser.runtime.onConnect.addListener((port) => {
 	port.onMessage.addListener((request) => {
 		getProfessorStats(request.professorName)
@@ -18,7 +18,6 @@ browser.runtime.onConnect.addListener((port) => {
 			});
 	});
 });
-// EVENT LISTENING
 
 // find and return the stats from ratemyprof given a professor name
 async function getProfessorStats(professorName) {
