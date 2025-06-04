@@ -22,7 +22,7 @@ browser.runtime.onConnect.addListener((port) => {
 // find and return the stats from ratemyprof given a professor name
 async function getProfessorStats(professorName) {
     let professorStats = [];
-    try{
+    try {
             // pull up ratemyprof
             const response = await fetch(URL, {
 			method: 'POST',

@@ -1,19 +1,17 @@
 // content script that displays the popup when the mouse is hovered over a professor name 
 
-let profInterval;
-// if displayStats() is currently running
+// tracks if displayStats() is currently running
 let running = false;
 
 // start the timer and call refresh display
-profInterval = setInterval(() => {
-    console.log(running);
+const profInterval = setInterval(() => {
     refreshDisplay();
-}, 1000);
+}, 1500);
 
 // method that decides when to call displayStats()
 async function refreshDisplay(){
     const searchResults = document.querySelector('[id="search-again"]');
-    if(searchResults.style.length == 1 && !running){
+    if(searchResults.style.length == 1 && !running) {
         displayStats();
         running = true;
     }
@@ -25,7 +23,7 @@ async function refreshDisplay(){
 
 // get and show ratemyprof stats for each page
 async function displayStats() {
-        
+
     // get all the instructor nodes
     const hoverElements = document.querySelectorAll('[data-property="instructor"]');
 
@@ -36,7 +34,7 @@ async function displayStats() {
 
             hoverElements[i].addEventListener('mouseenter',
                 () => {
-
+  
                     let hover = document.querySelectorAll( ":hover" );
 
                     let professorLink = hover[hover.length - 1];
@@ -49,6 +47,9 @@ async function displayStats() {
                     let professorName = professorLink.innerText;
 
                     // event listening
+
+                    console.log("sending request to ratemyprofessors...");
+
                     let port = browser.runtime.connect({ name: 'professor-rating' });
                     port.postMessage({ professorName });   
 
@@ -67,7 +68,9 @@ async function displayStats() {
 
                         } else {
                             professorLink.insertAdjacentHTML('afterend', `<div class="rating"><b>No ratings found.</b></div>`);
-                        }   
+                        } 
+                        
+                        console.log("professor information retrieved!");
 
                     });
                 });
@@ -75,13 +78,19 @@ async function displayStats() {
             hoverElements[i].addEventListener('mouseleave',
                 () => {
 
-                    // delete all adjacent html when mouse moves off the node
-                    let professorStats = document.querySelectorAll('[class="rating"]');
-                    for(let j = 0; j < professorStats.length; j++){
-                        professorStats[j].remove();
-                    }
-
+                    // wait 0.1 seconds, then delete all added html
+                    sleep(100).then(() => {
+                        let professorStats = document.querySelectorAll('[class="rating"]');
+                        for(let j = 0; j < professorStats.length; j++){
+                            professorStats[j].remove();
+                        }
+                    });
+                
                 });
         }
     }
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
