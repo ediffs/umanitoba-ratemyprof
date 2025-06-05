@@ -12,6 +12,8 @@ Install Steps:
 3. Click 'This Firefox", then "Load Temporary Add-on".
 4. Select the "manifest.json" file in the folder.
 
-From here you can open up Aurora Registration and browse classes as you please. Keep in mind: steps 2-4 will have to be repeated each time Firefox is restarted.
+From here you can open up Aurora Registration and browse classes as you please. 
+
+Note that steps 2-4 will have to be repeated each time Firefox is restarted.
 
 Idea + Inspiration: https://github.com/parsakhaz/uwRMP
