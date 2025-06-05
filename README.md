@@ -2,10 +2,6 @@ Firefox extension that displays RateMyProf info for professors when you hover ov
 
 ![Example](https://github.com/user-attachments/assets/e0b219c7-bb1d-4468-b33f-5c305954b661)
 
-If scores aren't displaying when professor name is hovered over:
-- Move your mouse away from the professor name and back onto it.
-- Click "Catalog Search Results" and then click "View Sections" once again.
-
 Install Steps:
 1. Download and extract "umanitoba-ratemyprof.zip" under "Releases".
 2. In the Firefox search bar type 'about:debugging'.
@@ -14,6 +10,10 @@ Install Steps:
 
 From here you can open up Aurora Registration and browse classes as you please. 
 
-Note that steps 2-4 will have to be repeated each time Firefox is restarted.
+**Note:** Steps 2-4 will have to be repeated each time Firefox is restarted.
+
+If scores aren't displaying when professor name is hovered over:
+- Move your mouse away from the professor name and back onto it.
+- Click "Catalog Search Results" and then click "View Sections" once again.
 
 Idea + Inspiration: https://github.com/parsakhaz/uwRMP
