@@ -50,30 +50,59 @@ async function displayStats() {
 
                     if(professorName != "" && professorName != null) { 
 
-                        console.log("sending request to ratemyprofessors...");
-
                         let port = browser.runtime.connect({ name: 'professor-rating' });
                         port.postMessage({ professorName });   
 
                         port.onMessage.addListener((professor) => {
 
                             if(professor.length != 0){
+                                
+                                // insert the professor's stats, create new elements
 
-                                // insert the professor's stats
-                                const rmpLink = `<a target="_blank" rel="noopener noreferrer" href='https://www.ratemyprofessors.com/professor?tid=${professor.legacyId}'>${professor.numRatings} ratings</a>`;
-                                professorLink.insertAdjacentHTML('afterend', `<div class="rating">${rmpLink}</div>`);
-                                professorLink.insertAdjacentHTML('afterend', `<div class="rating"><b>Rating:</b> ${professor.avgRating} / 5 </div>`);
-                                professorLink.insertAdjacentHTML('afterend', `<div class="rating"><b>Difficulty:</b> ${professor.avgDifficulty} / 5 </div>`);
+                                let rmpLink = document.createElement("a");
+                                rmpLink.className = 'rating'
+                                rmpLink.target = "_blank";
+                                rmpLink.rel = "noopener noreferrer";
+                                rmpLink.href = `https://www.ratemyprofessors.com/professor?tid=${professor.legacyId}`;
+                                rmpLink.innerText = `${professor.numRatings} ratings`;
+                                professorLink.insertAdjacentElement('afterend', rmpLink);
+
+                                
+                                let avgRating = document.createElement("div");
+                                avgRating.className = 'rating';
+                                avgRating.innerText = ` ${professor.avgRating} / 5`;
+                                professorLink.insertAdjacentElement('afterend', avgRating);
+                                let ratingText = document.createElement("b");
+                                ratingText.innerText = `Rating:`;
+                                avgRating.insertAdjacentElement('afterbegin', ratingText);
+
+                                let avgDifficulty = document.createElement("div");
+                                avgDifficulty.className = 'rating'
+                                avgDifficulty.innerText = ` ${professor.avgDifficulty} / 5`;
+                                professorLink.insertAdjacentElement('afterend', avgDifficulty);
+                                let difficultyText = document.createElement("b");
+                                difficultyText.innerText = `Difficulty:`;
+                                avgDifficulty.insertAdjacentElement('afterbegin', difficultyText);
+
                                 if (professor.wouldTakeAgainPercent != -1){
-                                    professorLink.insertAdjacentHTML('afterend', `<div class="rating"><b>${Math.round(Number(professor.wouldTakeAgainPercent))}%</b> would take again.</div>`);
+                                    let wouldTakeAgainPercent = document.createElement("div");
+                                    wouldTakeAgainPercent.className = 'rating';
+                                    wouldTakeAgainPercent.innerText = ` would take again.`;
+                                    professorLink.insertAdjacentElement('afterend', wouldTakeAgainPercent);
+                                    let takeAgainText = document.createElement("b");
+                                    takeAgainText.innerText = `${Math.round(Number(professor.wouldTakeAgainPercent))}%`;
+                                    wouldTakeAgainPercent.insertAdjacentElement('afterbegin', takeAgainText);
                                 }   
 
                             } else {
-                                professorLink.insertAdjacentHTML('afterend', `<div class="rating"><b>No ratings found.</b></div>`);
+                                let noRatings = document.createElement("div");
+                                noRatings.className = 'rating';
+                                professorLink.insertAdjacentElement('afterend', noRatings);
+                                let ratingText = document.createElement("b");
+                                ratingText.innerText = `No ratings found.`;
+                                noRatings.insertAdjacentElement('afterbegin', ratingText);
                             } 
                             
-                            console.log("professor information retrieved!");
-
                         });
                     }
 
@@ -82,8 +111,8 @@ async function displayStats() {
             hoverElements[i].addEventListener('mouseleave',
                 () => {
 
-                    // wait 0.1 seconds, then delete all added html
-                    sleep(100).then(() => {
+                    // wait, then delete all added html
+                    sleep(200).then(() => {
                         let professorStats = document.querySelectorAll('[class="rating"]');
                         for(let j = 0; j < professorStats.length; j++){
                             professorStats[j].remove();

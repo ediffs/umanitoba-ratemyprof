@@ -72,6 +72,5 @@ async function getProfessorStats(professorName) {
         console.error(error);
     }
 
-    console.log(professorName, professorStats);
     return professorStats;
 }
