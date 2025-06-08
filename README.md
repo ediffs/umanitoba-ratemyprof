@@ -2,7 +2,7 @@ Firefox extension that displays RateMyProf info for professors when you hover ov
 
 ![Example](https://github.com/user-attachments/assets/e0b219c7-bb1d-4468-b33f-5c305954b661)
 
-![Firefox Extension Link](https://addons.mozilla.org/en-US/firefox/addon/umanitoba-ratemyprof-finder/)
+[Firefox Extension Link](https://addons.mozilla.org/en-US/firefox/addon/umanitoba-ratemyprof-finder/)
 
 **If scores aren't displaying when professor name is hovered over:**
 - Move your mouse away from the professor name and back onto it.
