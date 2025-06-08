@@ -112,7 +112,7 @@ async function displayStats() {
                 () => {
 
                     // wait, then delete all added html
-                    sleep(200).then(() => {
+                    sleep(100).then(() => {
                         let professorStats = document.querySelectorAll('[class="rating"]');
                         for(let j = 0; j < professorStats.length; j++){
                             professorStats[j].remove();
