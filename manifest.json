@@ -4,7 +4,7 @@
     "version": "1.3",
   
     "description": "Integrates statistics from RateMyProfessors into UManitoba's Aurora Registration.",
-    "permissions": ["activeTab", "webRequest", "https://aurora-registration.umanitoba.ca/StudentRegistrationSsb/ssb/courseSearch/courseSearch*", "https://www.ratemyprofessors.com/*"],
+    "permissions": ["activeTab", "webRequest", "https://aurora-registration.umanitoba.ca/StudentRegistrationSsb/ssb/courseSearch/courseSearch*", "https://aurora-registration.umanitoba.ca/StudentRegistrationSsb/ssb/classRegistration/classRegistration*", "https://www.ratemyprofessors.com/*"],
     "icons": {
       "48": "icons/rmp-48.png"
     },
