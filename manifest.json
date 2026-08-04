@@ -2,21 +2,20 @@
     "manifest_version": 2,
     "name": "UManitoba RateMyProf Finder",
     "version": "1.3",
-  
+
     "description": "Integrates statistics from RateMyProfessors into UManitoba's Aurora Registration.",
-    "permissions": ["activeTab", "webRequest", "https://aurora-registration.umanitoba.ca/StudentRegistrationSsb/ssb/courseSearch/courseSearch*", "https://aurora-registration.umanitoba.ca/StudentRegistrationSsb/ssb/classRegistration/classRegistration*", "https://www.ratemyprofessors.com/*"],
+    "permissions": ["activeTab", "webRequest", "https://aurora-registration.umanitoba.ca/StudentRegistrationSsb/ssb/courseSearch/courseSearch*", "https://aurora-registration.umanitoba.ca/StudentRegistrationSsb/ssb/classSearch/classSearch*", "https://aurora-registration.umanitoba.ca/StudentRegistrationSsb/ssb/classRegistration/classRegistration*", "https://www.ratemyprofessors.com/*"],
     "icons": {
       "48": "icons/rmp-48.png"
     },
-  
+
     "background": {
     "scripts": ["./scr/searchrmp.js"]
   },
     "content_scripts": [
       {
-        "matches": ["https://aurora-registration.umanitoba.ca/StudentRegistrationSsb/ssb/courseSearch/courseSearch*"],
+        "matches": ["https://aurora-registration.umanitoba.ca/StudentRegistrationSsb/ssb/courseSearch/courseSearch*", "https://aurora-registration.umanitoba.ca/StudentRegistrationSsb/ssb/classSearch/classSearch*", "https://aurora-registration.umanitoba.ca/StudentRegistrationSsb/ssb/classRegistration/classRegistration*"],
         "js": ["./scr/displaypopup.js"]
       }
     ]
   }
-  
