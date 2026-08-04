@@ -4,7 +4,13 @@
     "version": "1.4",
     "browser_specific_settings": {
       "gecko": {
-        "strict_min_version": "54.0a1"
+        "id": "@umanitoba-rmp",
+        "data_collection_permissions": {
+          "required": [
+            "none"
+          ]
+        },
+        "strict_min_version": "58.0"
       }
     },
 
