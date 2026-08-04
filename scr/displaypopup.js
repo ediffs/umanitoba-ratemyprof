@@ -30,9 +30,6 @@ async function displayStats() {
                     let hover = document.querySelectorAll( ":hover" );
                     let professorLink = hover[hover.length - 1];
 
-                    // get all emails
-                    //  professorLink.querySelector("[class=email]");
-
                     if(professorLink.childNodes.length > 1){
                         professorLink = hover[hover.length - 1].firstChild;
                     }

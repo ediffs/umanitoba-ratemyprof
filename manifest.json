@@ -1,7 +1,12 @@
 {
     "manifest_version": 2,
     "name": "UManitoba RateMyProf Finder",
-    "version": "1.3",
+    "version": "1.4",
+    "browser_specific_settings": {
+      "gecko": {
+        "strict_min_version": "54.0a1"
+      }
+    },
 
     "description": "Integrates statistics from RateMyProfessors into UManitoba's Aurora Registration.",
     "permissions": ["activeTab", "webRequest", "https://aurora-registration.umanitoba.ca/StudentRegistrationSsb/ssb/courseSearch/courseSearch*", "https://aurora-registration.umanitoba.ca/StudentRegistrationSsb/ssb/classSearch/classSearch*", "https://aurora-registration.umanitoba.ca/StudentRegistrationSsb/ssb/classRegistration/classRegistration*", "https://www.ratemyprofessors.com/*"],
