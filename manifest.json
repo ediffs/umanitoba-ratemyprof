@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "UManitoba RateMyProf Finder",
-    "version": "1.4.1",
+    "version": "1.5",
     "browser_specific_settings": {
       "gecko": {
         "id": "{e90be9af-3819-406e-ac27-35ed09a87ba4}",

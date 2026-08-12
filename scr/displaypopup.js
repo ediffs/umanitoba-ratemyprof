@@ -3,7 +3,7 @@
 // start the timer and call refresh display
 const profInterval = setInterval(() => {
     refreshDisplay();
-}, 1500);
+}, 1000);
 
 // method that decides when to call displayStats()
 async function refreshDisplay() {
@@ -16,117 +16,94 @@ async function refreshDisplay() {
 
 // get and show ratemyprof stats for each page
 async function displayStats() {
-  // get all the instructor nodes
-  const hoverElements = document.querySelectorAll('[data-property="instructor"]');
+  // get card
+  const select = document.querySelectorAll('[class="profileCard arrow default"]');
+  if (select.length <= 0) return;
+  const card = select[0];
+  const info = card.querySelectorAll('[class="info"]')[0].firstChild;
 
-  if (hoverElements.length <= 1) return;
-
-  // set listeners to display popup
-  for (let i = 1; i < hoverElements.length; i++) {
-
-    // set listener to display popup
-    hoverElements[i].addEventListener('mouseenter',
-      () => {
-        let hover = document.querySelectorAll(":hover");
-        let professorLink = hover[hover.length - 1];
-
-        let blanks = document.querySelectorAll('[class="blank-message"]');
-        for (let j = 0; j < blanks.length; j++) {
-          blanks[j].remove();
-        }
-
-        if (professorLink.childNodes.length > 1) {
-          professorLink = hover[hover.length - 1].firstChild;
-        }
-
-        let professorName = professorLink.innerText;
-
-        // event listening
-        if (professorName != "" && professorName != null) {
-          let port = browser.runtime.connect({ name: 'professor-rating' });
-          port.postMessage({ professorName });
-          port.onMessage.addListener((professor) => {
-
-          if (professor.length != 0) {
-            // insert the professor's stats, create new elements
-            if (professorLink.parentNode == null || professorLink.parentNode.querySelector("[id=rmp-link]") == null) {
-              let rmpLink = document.createElement("a");
-              rmpLink.id = "rmp-link";
-              rmpLink.className = 'rating'
-              rmpLink.target = "_blank";
-              rmpLink.rel = "noopener noreferrer";
-              rmpLink.href = `https://www.ratemyprofessors.com/professor?tid=${professor.legacyId}`;
-              rmpLink.innerText = `${professor.numRatings} ratings`;
-              professorLink.insertAdjacentElement('afterend', rmpLink);
-            }
-
-            // insert the professor's stats, create new elements
-            if (professorLink.parentNode == null || professorLink.parentNode.querySelector("[id=avg-rating]") == null) {
-              let avgRating = document.createElement("div");
-              avgRating.id = "avg-rating";
-              avgRating.className = 'rating';
-              avgRating.innerText = ` ${professor.avgRating} / 5`;
-              professorLink.insertAdjacentElement('afterend', avgRating);
-
-              let ratingText = document.createElement("b");
-              ratingText.innerText = `Rating:`;
-              avgRating.insertAdjacentElement('afterbegin', ratingText);
-            }
-
-            // insert the professor's stats, create new elements
-            if (professorLink.parentNode == null || professorLink.parentNode.querySelector("[id=avg-difficulty]") == null) {
-              let avgDifficulty = document.createElement("div");
-              avgDifficulty.className = 'rating'
-              avgDifficulty.id = "avg-difficulty";
-              avgDifficulty.innerText = ` ${professor.avgDifficulty} / 5`;
-              professorLink.insertAdjacentElement('afterend', avgDifficulty);
-
-              let difficultyText = document.createElement("b");
-              difficultyText.innerText = `Difficulty:`;
-              avgDifficulty.insertAdjacentElement('afterbegin', difficultyText);
-            }
-
-            // insert the professor's stats, create new elements
-            if (professorLink.parentNode.wouldTakeAgainPercent != -1 && (professorLink.parentNode == null || professorLink.parentNode.querySelector("[id=would-take-again]") == null)) {
-              let wouldTakeAgainPercent = document.createElement("div");
-              wouldTakeAgainPercent.id = "would-take-again";
-              wouldTakeAgainPercent.className = 'rating';
-              wouldTakeAgainPercent.innerText = ` would take again.`;
-              professorLink.insertAdjacentElement('afterend', wouldTakeAgainPercent);
-
-              let takeAgainText = document.createElement("b");
-              takeAgainText.innerText = `${Math.round(Number(professor.wouldTakeAgainPercent))}%`;
-              wouldTakeAgainPercent.insertAdjacentElement('afterbegin', takeAgainText);
-
-            } else if (professorLink.parentNode == null || professorLink.parentNode.querySelector("[id=no-ratings]") == null) {
-              let noRatings = document.createElement("div");
-              noRatings.id = "no-ratings";
-              noRatings.className = 'rating';
-              professorLink.insertAdjacentElement('afterend', noRatings);
-
-              let ratingText = document.createElement("b");
-              ratingText.innerText = `No ratings found.`;
-              noRatings.insertAdjacentElement('afterbegin', ratingText);
-            }
-          }
-        });
-      }
-    });
-
-  hoverElements[i].addEventListener('mouseleave',
-    () => {
-      // wait, then delete all added html
-      sleep(100).then(() => {
-        let professorStats = document.querySelectorAll('[class="rating"]');
-        for (let j = 0; j < professorStats.length; j++) {
-          professorStats[j].remove();
-        }
-      });
-    });
+  // remove professor stats if card is hidden
+  let style = card.style.display;
+  if (style == "none") {
+    let professorStats = document.querySelectorAll('[class="rating"]');
+    for (let j = 0; j < professorStats.length; j++) {
+      professorStats[j].remove();
+    }
+    return;
   }
-}
 
+  let professorName = card.querySelectorAll('[class="facultyName"]')[0].textContent;
+  if (professorName == "" || professorName == null) return;
 
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  // event listening
+  let port = browser.runtime.connect({ name: 'professor-rating' });
+  port.postMessage({ professorName });
+  port.onMessage.addListener((professor) => {
+    if (professor.length != 0) {
+
+      // insert the professor's stats, create new elements
+      if (card.querySelector("[id=rmp-link]") == null) {
+        let itemOne = document.createElement("li");
+        let rmpLink = document.createElement("a");
+        rmpLink.id = "rmp-link";
+        rmpLink.className = 'rating';
+        rmpLink.target = "_blank";
+        rmpLink.rel = "noopener noreferrer";
+        rmpLink.href = `https://www.ratemyprofessors.com/professor?tid=${professor.legacyId}`;
+        rmpLink.innerText = `${professor.numRatings} ratings`;
+        itemOne.appendChild(rmpLink);
+        info.appendChild(itemOne);
+      }
+
+      // insert the professor's stats, create new elements
+      if (card.querySelector("[id=avg-rating]") == null) {
+        let avgRating = document.createElement("li");
+        avgRating.id = "avg-rating";
+        avgRating.className = 'rating';
+        avgRating.innerText = ` ${professor.avgRating} / 5`;
+        info.appendChild(avgRating);
+
+        let ratingText = document.createElement("b");
+        ratingText.innerText = `Rating:`;
+        avgRating.insertAdjacentElement('afterbegin', ratingText);
+      }
+
+      // insert the professor's stats, create new elements
+      if (card.querySelector("[id=avg-difficulty]") == null) {
+        let avgDifficulty = document.createElement("li");
+        avgDifficulty.className = 'rating'
+        avgDifficulty.id = "avg-difficulty";
+        avgDifficulty.innerText = ` ${professor.avgDifficulty} / 5`;
+        info.appendChild(avgDifficulty);
+
+        let difficultyText = document.createElement("b");
+        difficultyText.innerText = `Difficulty:`;
+        avgDifficulty.insertAdjacentElement('afterbegin', difficultyText);
+      }
+
+      // insert the professor's stats, create new elements
+      if (card.querySelector("[id=would-take-again]") == null) {
+        let wouldTakeAgainPercent = document.createElement("li");
+        wouldTakeAgainPercent.id = "would-take-again";
+        wouldTakeAgainPercent.className = 'rating';
+        wouldTakeAgainPercent.innerText = ` would take again.`;
+        info.appendChild(wouldTakeAgainPercent);
+
+        let takeAgainText = document.createElement("b");
+        takeAgainText.innerText = `${Math.round(Number(professor.wouldTakeAgainPercent))}%`;
+        wouldTakeAgainPercent.insertAdjacentElement('afterbegin', takeAgainText);
+      }
+    } else {
+      if (card.querySelector("[id=no-ratings]") == null) {
+        let noRatings = document.createElement("li");
+        noRatings.id = "no-ratings";
+        noRatings.className = 'rating';
+        info.appendChild(noRatings);
+
+        let ratingText = document.createElement("b");
+        ratingText.innerText = `No ratings found.`;
+        noRatings.insertAdjacentElement('afterbegin', ratingText);
+      }
+    }
+  });
 }
